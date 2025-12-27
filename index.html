@@ -271,19 +271,24 @@
             <div class="login-box box">
               <div class="box-h dark">Member Login</div>
               <div class="box-b dark">
-                <div class="muted" style="color:#d9d9d9; margin-bottom:6px;">
-                  Accounts are not available yet.
+                <div id="authStatus" class="muted" style="color:#d9d9d9; margin-bottom:6px;">
+                  Not logged in.
                 </div>
 
-                <label class="lbl" for="u">Username:</label>
-                <input id="u" class="txt" type="text" disabled />
-                <label class="lbl" for="p">Password:</label>
-                <input id="p" class="txt" type="password" disabled />
+                <label class="lbl" for="email">Email:</label>
+                <input id="email" class="txt" type="email" autocomplete="username" />
 
-                <a class="btn darkbtn disabled" href="#" onclick="return false;">Login (soon)</a>
-                <a class="btn darkbtn disabled" href="#" onclick="return false;">Register (soon)</a>
+                <label class="lbl" for="password">Password:</label>
+                <input id="password" class="txt" type="password" autocomplete="current-password" />
 
-                <div class="tiny-links"><a class="disabled" href="#" onclick="return false;">Parent Login</a></div>
+                <a id="loginBtn" class="btn darkbtn" href="#">Login</a>
+                <a id="registerBtn" class="btn darkbtn" href="#">Register</a>
+
+                <div class="tiny-links">
+                  <a id="logoutBtn" href="#" style="display:none;">Logout</a>
+                  &nbsp;|&nbsp;
+                  <a href="#" onclick="return false;">Parent Login</a>
+                </div>
               </div>
             </div>
 
@@ -377,7 +382,7 @@
             <div class="box-h">2DWORLD Status</div>
             <div class="box-b">
               <div class="muted">
-                • Accounts: coming soon<br>
+                • Accounts: online now<br>
                 • Worlds publishing: coming soon<br>
                 • Numbers/statistics will appear after launch
               </div>
@@ -416,5 +421,11 @@
   </div>
 
   <script>document.getElementById("y").textContent = new Date().getFullYear();</script>
+
+  <!-- Firebase Auth wiring -->
+  <script type="module">
+    import { wireAuthUI } from "./js/auth.js";
+    wireAuthUI();
+  </script>
 </body>
 </html>

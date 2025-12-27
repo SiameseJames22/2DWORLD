@@ -4,428 +4,154 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>2DWORLD - Free 2D Worlds</title>
-
+  <link rel="stylesheet" href="./styles.css">
   <style>
-    :root{
-      --scale: 1.30;               /* you said 1.30 fits */
-      --pageW: 900px;
-
-      --navBlue1: #1b67c9;
-      --navBlue2: #0e4ea4;
-      --sky1: #1f84e8;
-      --sky2: #0e4ea4;
-
-      --boxBorder: #b9b9b9;
-      --boxShadow: rgba(0,0,0,.25);
-      --text: #222;
-      --link: #1a4fb0;
-    }
-
-    *{ box-sizing:border-box; }
-    html,body{ height:100%; }
-    body{
-      margin:0;
-      font: 12px/1.2 Tahoma, Arial, sans-serif;
-      color: var(--text);
-      background:
-        radial-gradient(900px 500px at 50% 0%, rgba(255,255,255,.35), rgba(255,255,255,0) 60%),
-        linear-gradient(#0a3f9b, #042765);
-    }
-    a{ color:var(--link); text-decoration:none; }
-    a:hover{ text-decoration:underline; }
-
-    #viewport{ width:100%; display:flex; justify-content:center; padding:14px 0 40px; }
-    #page{ width:var(--pageW); transform:scale(var(--scale)); transform-origin: top center; }
-
-    .top-sky{
-      background:
-        radial-gradient(600px 220px at 50% 35%, rgba(255,255,255,.35), rgba(255,255,255,0) 65%),
-        linear-gradient(var(--sky1), var(--sky2));
-      border:1px solid rgba(255,255,255,.25);
-      box-shadow:0 6px 16px rgba(0,0,0,.28);
-    }
     .topbar{ position:relative; height:88px; padding:8px 10px; }
-
-    .auth{
-      position:absolute; top:10px; left:12px;
-      background:rgba(255,255,255,.85);
-      border:1px solid rgba(0,0,0,.15);
-      padding:2px 6px; border-radius:2px; font-weight:bold;
-    }
-
-    .logo{
-      display:inline-block; margin:8px auto 0; text-align:center; width:100%;
-      font-family: Impact, Arial Black, sans-serif; letter-spacing:1px;
-    }
+    .auth{ position:absolute; top:10px; left:12px; background:rgba(255,255,255,.85); border:1px solid rgba(0,0,0,.15); padding:2px 6px; border-radius:2px; font-weight:bold; }
+    .logo{ display:inline-block; margin:8px auto 0; text-align:center; width:100%; font-family: Impact, Arial Black, sans-serif; letter-spacing:1px; }
     .logo-word{ font-size:48px; color:#fff; text-shadow:0 2px 0 rgba(0,0,0,.25); }
     .logo-world{ font-size:48px; color:#ff4a3a; text-shadow:0 2px 0 rgba(0,0,0,.25); }
-
-    .signup-cta{
-      position:absolute; right:10px; top:16px;
-      width:210px; height:40px; display:flex; align-items:center; justify-content:center;
-      font-weight:bold; color:#0b2b66; text-shadow:0 1px 0 rgba(255,255,255,.7);
-      border:1px solid rgba(0,0,0,.25); border-radius:4px;
+    .signup-cta{ position:absolute; right:10px; top:16px; width:210px; height:40px; display:flex; align-items:center; justify-content:center;
+      font-weight:bold; color:#0b2b66; border:1px solid rgba(0,0,0,.25); border-radius:4px;
       background:linear-gradient(#fff4b8, #ffb53a);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.65), 0 2px 0 rgba(0,0,0,.12);
     }
-    .signup-cta:hover{ text-decoration:none; filter:brightness(1.03); }
-
-    .nav{
-      list-style:none; margin:0; padding:0 6px; display:flex; gap:2px;
-      background:linear-gradient(var(--navBlue1), var(--navBlue2));
-      border-top:1px solid rgba(255,255,255,.22);
-      border-bottom:1px solid rgba(0,0,0,.35);
-    }
-    .nav a{
-      display:block; padding:7px 10px; color:#fff; font-weight:bold;
-      text-shadow:0 1px 0 rgba(0,0,0,.35);
-    }
-    .nav a:hover{ background:rgba(255,255,255,.10); text-decoration:none; }
-    .nav a.active{ background:rgba(255,255,255,.18); }
-
-    .columns{
-      display:flex; gap:10px; padding:10px;
-      background:#f5f5f5;
-      border:1px solid rgba(0,0,0,.35);
-      border-top:none;
-      box-shadow:0 10px 22px rgba(0,0,0,.25);
-    }
-    .col-left{ width:560px; }
-    .col-right{ width:310px; }
-
-    .box{ background:#fff; border:1px solid var(--boxBorder); box-shadow:2px 2px 0 var(--boxShadow); }
-    .box + .box{ margin-top:10px; }
-    .box-h{
-      padding:6px 8px; font-weight:bold;
-      background:linear-gradient(#ededed, #d8d8d8);
-      border-bottom:1px solid #bdbdbd;
-    }
-    .box-b{ padding:8px; }
-    .box-h.dark{ color:#fff; background:linear-gradient(#3b3b3b,#1f1f1f); border-bottom:1px solid #000; }
-    .box-b.dark{ background:linear-gradient(#4a4a4a,#252525); color:#fff; }
-
-    .row-top{ display:flex; gap:8px; align-items:stretch; margin-top:3px; }
+    .columns{ display:flex; gap:10px; padding:10px; background:#f5f5f5; border:1px solid rgba(0,0,0,.35); border-top:none; box-shadow:0 10px 22px rgba(0,0,0,.25); }
+    .col-left{ width:560px; } .col-right{ width:310px; }
+    .row-top{ display:flex; gap:8px; align-items:stretch; }
     .login-box{ width:170px; }
     .promo-box{ width:380px; }
     .playnow-box{ width:170px; display:flex; flex-direction:column; align-items:center; justify-content:center; }
-
-    .lbl{ display:block; font-size:11px; margin:5px 0 2px; font-weight:bold; }
-    .txt{ width:100%; padding:3px; border:1px solid #999; background:#fff; font:12px Tahoma, Arial, sans-serif; }
-
-    .btn{
-      display:block; margin-top:8px; text-align:center; padding:6px 0; font-weight:bold;
-      border-radius:2px; border:1px solid rgba(0,0,0,.55);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.25);
+    .playnow{ width:130px; height:130px; border-radius:999px; display:flex; align-items:center; justify-content:center; text-align:center;
+      font-weight:900; font-size:28px; line-height:.9; color:#fff; background: radial-gradient(circle at 30% 25%, #9bff80, #16a800 55%, #0a6b00);
+      border:4px solid #0d5f00;
     }
-    .darkbtn{ background:linear-gradient(#3b78c8,#1a4d9d); color:#fff; }
-    .darkbtn:hover{ text-decoration:none; filter:brightness(1.05); }
-
-    .disabled{
-      opacity:.45;
-      cursor:not-allowed;
-      filter:grayscale(1);
-      pointer-events:none;
-    }
+    .promo-inner{ height:100%; display:flex; gap:10px; align-items:center; padding:10px; background:linear-gradient(#fdfdfd,#eeeeee); }
+    .promo-icon{ width:90px; height:90px; border-radius:10px; border:1px solid #bbb; background:linear-gradient(#d9e9ff,#8db9ff); }
+    .promo-title{ font-size:16px; font-weight:bold; }
+    .footer{ margin-top:10px; padding:10px 8px 16px; background:#f5f5f5; border:1px solid rgba(0,0,0,.35); box-shadow:0 10px 22px rgba(0,0,0,.25); text-align:center; }
+    .legal{ margin-top:10px; font-size:10px; color:#444; }
     .tiny-links{ margin-top:8px; text-align:center; font-size:10px; }
     .tiny-links a{ color:#fff; font-weight:bold; }
-
-    .promo-inner{
-      height:100%; display:flex; gap:10px; align-items:center; padding:10px;
-      background:linear-gradient(#fdfdfd,#eeeeee);
-    }
-    .promo-icon{
-      width:90px; height:90px; border-radius:10px; border:1px solid #bbb;
-      background: linear-gradient(135deg, rgba(255,255,255,.6), rgba(255,255,255,0)),
-                  radial-gradient(60px 40px at 30% 30%, rgba(255,255,255,.5), rgba(255,255,255,0) 60%),
-                  linear-gradient(#d9e9ff,#8db9ff);
-    }
-    .promo-title{ font-size:16px; font-weight:bold; margin-bottom:4px; }
-    .promo-sub{ color:#444; }
-    .promo-note{ color:#777; font-size:11px; margin-top:6px; }
-
-    .playnow{
-      width:130px; height:130px; border-radius:999px;
-      display:flex; align-items:center; justify-content:center; text-align:center;
-      font-weight:900; font-size:28px; line-height:.9; color:#fff;
-      text-shadow:0 2px 0 rgba(0,0,0,.35);
-      background: radial-gradient(circle at 30% 25%, #9bff80, #16a800 55%, #0a6b00);
-      border:4px solid #0d5f00;
-      box-shadow: inset 0 2px 0 rgba(255,255,255,.35), 0 4px 0 rgba(0,0,0,.15);
-    }
-    .playnow:hover{ text-decoration:none; filter:brightness(1.03); }
-    .report{ margin-top:6px; font-size:11px; color:#666; }
-
-    .mid-banner-inner{
-      display:flex; align-items:center; gap:10px; padding:8px;
-      background:linear-gradient(#ffffff,#efefef);
-    }
-    .mid-avatar{ width:42px; height:42px; border:1px solid #aaa; background:linear-gradient(#ffd7a6,#ff9b4a); }
-    .mid-title{ font-weight:bold; font-size:13px; }
-    .mid-sub{ color:#555; font-size:11px; }
-    .mid-play{
-      margin-left:auto; padding:8px 10px; font-weight:bold; color:#0b2b66;
-      border:1px solid rgba(0,0,0,.35); border-radius:4px;
-      background:linear-gradient(#c7ebff,#6bb7ff);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.6);
-    }
-    .mid-play:hover{ text-decoration:none; filter:brightness(1.03); }
-
-    .featured-empty{ display:flex; gap:10px; }
-    .empty-thumb{
-      width:420px; height:230px;
-      border:1px solid #aaa;
-      box-shadow:2px 2px 0 rgba(0,0,0,.20);
-      background:linear-gradient(#f6f6f6,#e6e6e6);
-      position:relative; overflow:hidden;
-    }
-    .empty-title{
-      position:absolute; left:14px; top:16px;
-      font-weight:bold; font-size:16px; color:#333;
-    }
-    .empty-sub{
-      position:absolute; left:14px; top:42px; width:380px;
-      font-size:12px; color:#666;
-    }
-    .empty-side{ width:110px; font-size:11px; }
-    .stat{ margin:6px 0; }
-    .k{ display:inline-block; width:62px; }
-    .v{ font-weight:bold; }
-
-    .play-this{
-      display:block; text-align:center; padding:6px 0; margin-bottom:8px;
-      font-weight:bold; color:#fff; border:1px solid rgba(0,0,0,.45);
-      background:linear-gradient(#79c7ff,#2b7bd4);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.25);
-    }
-
-    .ad-inner{ padding:8px; }
-    .ad-rect{
-      height:250px; border:1px dashed #999; background:linear-gradient(#fff,#f2f2f2);
-      display:flex; align-items:center; justify-content:center; color:#666; font-weight:bold;
-    }
-
-    .parents{ display:flex; gap:8px; }
-    .parents-copy{ width:200px; }
-    .seals{ margin-left:auto; display:flex; flex-direction:column; gap:6px; }
-    .seal{
-      width:58px; height:28px; border:1px solid #aaa;
-      background:linear-gradient(#fff,#e9e9e9);
-      display:flex; align-items:center; justify-content:center;
-      font-weight:bold; color:#666; font-size:10px;
-    }
-    .parents-links{ margin-top:10px; display:flex; gap:6px; flex-wrap:wrap; }
-    .mini-btn{
-      display:inline-block; padding:4px 6px; border:1px solid #aaa;
-      background:linear-gradient(#fff,#e9e9e9); color:#222; font-size:11px;
-    }
-    .mini-btn:hover{ text-decoration:none; filter:brightness(1.03); }
-
-    .news a{ display:block; padding-left:14px; margin:4px 0;
-      background: radial-gradient(circle at 4px 50%, #3b78c8 0 2px, transparent 3px);
-    }
-    .more{ text-align:right; margin-top:8px; }
-
-    .muted{ color:#666; font-size:11px; }
-    .footer{
-      margin-top:10px; padding:10px 8px 16px; background:#f5f5f5;
-      border:1px solid rgba(0,0,0,.35); box-shadow:0 10px 22px rgba(0,0,0,.25);
-      text-align:center;
-    }
-    .foot-links{ font-size:11px; }
-    .legal{ margin-top:10px; font-size:10px; color:#444; }
+    .muted{ color:#d9d9d9; font-size:11px; }
   </style>
 </head>
-
 <body>
-  <div id="viewport">
-    <div id="page">
-
-      <div class="top-sky">
-        <div class="topbar">
-          <div class="auth"><a href="#" onclick="return false;">Login</a></div>
-
-          <a class="logo" href="#" aria-label="2DWORLD home" onclick="return false;">
-            <span class="logo-word">2D</span><span class="logo-world">WORLD</span>
-          </a>
-
-          <a class="signup-cta" href="#" onclick="return false;">Sign-up and Play!</a>
-        </div>
-
-        <ul class="nav">
-          <li><a href="#" class="active" onclick="return false;">My 2DWORLD</a></li>
-          <li><a href="#" onclick="return false;">Worlds</a></li>
-          <li><a href="#" onclick="return false;">Catalog</a></li>
-          <li><a href="#" onclick="return false;">People</a></li>
-          <li><a href="#" onclick="return false;">Creator Club</a></li>
-          <li><a href="#" onclick="return false;">Events</a></li>
-          <li><a href="#" onclick="return false;">Forum</a></li>
-          <li><a href="#" onclick="return false;">News</a></li>
-          <li><a href="#" onclick="return false;">Parents</a></li>
-          <li><a href="#" onclick="return false;">Help</a></li>
-        </ul>
+  <div id="viewport"><div id="page">
+    <div class="top-sky">
+      <div class="topbar">
+        <div class="auth"><a href="./account.html" id="accountLink">Login</a></div>
+        <a class="logo" href="./index.html"><span class="logo-word">2D</span><span class="logo-world">WORLD</span></a>
+        <a class="signup-cta" href="./register.html">Sign-up and Play!</a>
       </div>
-
-      <div class="columns">
-        <div class="col-left">
-          <div class="row-top">
-            <div class="login-box box">
-              <div class="box-h dark">Member Login</div>
-              <div class="box-b dark">
-                <div id="authStatus" class="muted" style="color:#d9d9d9; margin-bottom:6px;">
-                  Not logged in.
-                </div>
-
-                <label class="lbl" for="email">Email:</label>
-                <input id="email" class="txt" type="email" autocomplete="username" />
-
-                <label class="lbl" for="password">Password:</label>
-                <input id="password" class="txt" type="password" autocomplete="current-password" />
-
-                <a id="loginBtn" class="btn darkbtn" href="#">Login</a>
-                <a id="registerBtn" class="btn darkbtn" href="#">Register</a>
-
-                <div class="tiny-links">
-                  <a id="logoutBtn" href="#" style="display:none;">Logout</a>
-                  &nbsp;|&nbsp;
-                  <a href="#" onclick="return false;">Parent Login</a>
-                </div>
-              </div>
-            </div>
-
-            <div class="promo-box box">
-              <div class="promo-inner">
-                <div class="promo-icon"></div>
-                <div>
-                  <div class="promo-title">Welcome to 2DWORLD</div>
-                  <div class="promo-sub">Build, battle, roleplay, or just hang out — all in 2D.</div>
-                  <div class="promo-note">(No Flash. Runs in modern browsers.)</div>
-                </div>
-              </div>
-            </div>
-
-            <div class="playnow-box box">
-              <a class="playnow disabled" href="#" onclick="return false;" aria-disabled="true">
-                <span>Play<br/>Now</span>
-              </a>
-              <div class="report">[ report ]</div>
-            </div>
-          </div>
-
-          <div class="box">
-            <div class="mid-banner-inner">
-              <div class="mid-avatar"></div>
-              <div>
-                <div class="mid-title">The FREE online 2D world-building game.</div>
-                <div class="mid-sub">Create worlds, share them, and play with friends.</div>
-              </div>
-              <a class="mid-play disabled" href="#" onclick="return false;" aria-disabled="true">▶ PLAY NOW</a>
-            </div>
-          </div>
-
-          <div class="box">
-            <div class="box-h">
-              Featured World:
-              <span style="color:#666;font-weight:bold;">(blank)</span>
-            </div>
-            <div class="box-b">
-              <div class="featured-empty">
-                <div class="empty-thumb">
-                  <div class="empty-title">No featured world yet.</div>
-                  <div class="empty-sub">This section will be used once Worlds can be published.</div>
-                </div>
-
-                <div class="empty-side">
-                  <a class="play-this disabled" href="#" onclick="return false;" aria-disabled="true">Play This</a>
-                  <div class="stat"><span class="k">Updated:</span> <span class="v">—</span></div>
-                  <div class="stat"><span class="k">Favorited:</span> <span class="v">—</span></div>
-                  <div class="stat"><span class="k">Visited:</span> <span class="v">—</span></div>
-                  <div class="stat" style="margin-top:10px;">
-                    <div class="muted"><b>By:</b> —</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        <div class="col-right">
-          <div class="box ad">
-            <div class="ad-inner">
-              <div style="font-weight:bold;margin-bottom:6px;">Advertisement</div>
-              <div class="ad-rect">300×250</div>
-              <div class="report">[ report ]</div>
-            </div>
-          </div>
-
-          <div class="box">
-            <div class="box-h">Parents</div>
-            <div class="box-b">
-              <div class="parents">
-                <div class="parents-copy">
-                  2DWORLD is a kid-friendly place where players can create and explore in a moderated environment.
-                </div>
-                <div class="seals">
-                  <div class="seal">TRUST</div>
-                  <div class="seal">SAFE</div>
-                </div>
-              </div>
-              <div class="parents-links">
-                <a class="mini-btn" href="#" onclick="return false;">Learn More</a>
-                <a class="mini-btn disabled" href="#" onclick="return false;" aria-disabled="true">Parent Account</a>
-                <a class="mini-btn" href="#" onclick="return false;">Privacy Policy</a>
-              </div>
-            </div>
-          </div>
-
-          <div class="box">
-            <div class="box-h">2DWORLD Status</div>
-            <div class="box-b">
-              <div class="muted">
-                • Accounts: online now<br>
-                • Worlds publishing: coming soon<br>
-                • Numbers/statistics will appear after launch
-              </div>
-            </div>
-          </div>
-
-          <div class="box">
-            <div class="box-h">2DWORLD News</div>
-            <div class="box-b">
-              <div class="news">
-                <a href="#" onclick="return false;">Website development updates</a>
-                <a href="#" onclick="return false;">Creator tools preview</a>
-                <a href="#" onclick="return false;">Moderation & safety info</a>
-                <a href="#" onclick="return false;">Public launch announcements</a>
-              </div>
-              <div class="more"><a class="mini-btn" href="#" onclick="return false;">More...</a></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="footer">
-        <div class="foot-links">
-          <a href="#" onclick="return false;"><b>Privacy Policy</b></a> | <a href="#" onclick="return false;">Advertise</a> |
-          <a href="#" onclick="return false;">Press</a> | <a href="#" onclick="return false;">Contact</a> |
-          <a href="#" onclick="return false;">About</a> | <a href="#" onclick="return false;">Free Worlds</a> |
-          <a href="#" onclick="return false;">Jobs</a>
-        </div>
-        <div class="legal">
-          2DWORLD © <span id="y"></span>. This site is not affiliated with Roblox Corporation.<br>
-          Use of this site signifies your acceptance of the Terms and Conditions.
-        </div>
-      </div>
-
+      <ul class="nav">
+        <li><a class="active" href="./index.html">My 2DWORLD</a></li>
+        <li><a href="#" onclick="return false;">Worlds</a></li>
+        <li><a href="#" onclick="return false;">Catalog</a></li>
+        <li><a href="#" onclick="return false;">People</a></li>
+        <li><a href="#" onclick="return false;">Creator Club</a></li>
+        <li><a href="#" onclick="return false;">Events</a></li>
+        <li><a href="#" onclick="return false;">Forum</a></li>
+        <li><a href="#" onclick="return false;">News</a></li>
+        <li><a href="#" onclick="return false;">Parents</a></li>
+        <li><a href="#" onclick="return false;">Help</a></li>
+      </ul>
     </div>
-  </div>
+
+    <div class="columns">
+      <div class="col-left">
+        <div class="row-top">
+          <div class="login-box box">
+            <div class="box-h dark">Member Login</div>
+            <div class="box-b dark">
+              <div id="loginMsg" class="muted" style="margin-bottom:6px;">Sign in with your email + password.</div>
+              <label class="lbl" for="email">Email:</label>
+              <input id="email" class="txt" type="email" autocomplete="email" />
+              <label class="lbl" for="pass">Password:</label>
+              <input id="pass" class="txt" type="password" autocomplete="current-password" />
+              <button id="loginBtn" class="btn" style="width:100%; margin-top:8px;">Login</button>
+              <a class="btn secondary" href="./register.html" style="width:100%; margin-top:6px; text-align:center;">Register</a>
+              <div class="tiny-links">
+                <a href="./reset.html">Forgot password?</a>
+                <span style="opacity:.5"> | </span>
+                <a href="#" id="resendVerify">Resend verification</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="promo-box box">
+            <div class="promo-inner">
+              <div class="promo-icon"></div>
+              <div>
+                <div class="promo-title">Welcome to 2DWORLD</div>
+                <div style="color:#444;">Build, battle, roleplay, or just hang out — all in 2D.</div>
+                <div style="color:#777; font-size:11px; margin-top:6px;">(No Flash. Runs in modern browsers.)</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="playnow-box box">
+            <a class="playnow" href="./account.html"><span>Play<br/>Now</span></a>
+            <div style="margin-top:6px; font-size:11px; color:#666;">[ report ]</div>
+          </div>
+        </div>
+
+        <div class="box" style="margin-top:10px;">
+          <div class="box-h">Featured World: <span style="color:#666;font-weight:bold;">(blank)</span></div>
+          <div class="box-b">
+            <div style="border:1px solid #aaa; background:linear-gradient(#f6f6f6,#e6e6e6); padding:18px;">
+              <b>No featured world yet.</b><br>This section will be used once Worlds can be published.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-right">
+        <div class="box">
+          <div class="box-h">2DWORLD Status</div>
+          <div class="box-b" style="color:#666; font-size:11px;">
+            • Accounts: live (Firebase Auth)<br>
+            • Worlds publishing: coming soon<br>
+            • Stats: after launch
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="legal">
+        2DWORLD © <span id="y"></span>. This site is not affiliated with Roblox Corporation.<br>
+        Use of this site signifies your acceptance of the Terms and Conditions.
+      </div>
+    </div>
+
+  </div></div>
 
   <script>document.getElementById("y").textContent = new Date().getFullYear();</script>
 
-  <!-- Firebase Auth wiring -->
   <script type="module">
-    import { wireAuthUI } from "./js/auth.js";
-    wireAuthUI();
+    import { loginWithEmail, watchAuth, prettyError, resendVerification } from "./auth.js";
+    const loginMsg = document.getElementById("loginMsg");
+    const loginBtn = document.getElementById("loginBtn");
+    const resendBtn = document.getElementById("resendVerify");
+    const accountLink = document.getElementById("accountLink");
+
+    loginBtn.addEventListener("click", async () => {
+      loginMsg.textContent = "Signing in...";
+      try{
+        const email = document.getElementById("email").value.trim();
+        const pass = document.getElementById("pass").value;
+        await loginWithEmail(email, pass);
+        location.href = "./account.html";
+      }catch(e){ loginMsg.textContent = prettyError(e); }
+    });
+
+    resendBtn.addEventListener("click", async (e) => {
+      e.preventDefault();
+      try{ await resendVerification(); loginMsg.textContent = "Verification email sent."; }
+      catch(err){ loginMsg.textContent = prettyError(err); }
+    });
+
+    watchAuth((user) => { accountLink.textContent = user ? "Account" : "Login"; });
   </script>
 </body>
 </html>

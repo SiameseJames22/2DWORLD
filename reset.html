@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>2DWORLD - Password Reset</title>
+  <link rel="stylesheet" href="./styles.css">
+  <style>.panel{ background:#f5f5f5; border:1px solid rgba(0,0,0,.35); box-shadow:0 10px 22px rgba(0,0,0,.25); padding:10px; }</style>
+</head>
+<body>
+  <div id="viewport"><div id="page">
+    <div class="top-sky" style="padding:10px;"><a href="./index.html" style="color:#fff; font-weight:bold;">← Back</a></div>
+    <div class="panel" style="margin-top:10px;">
+      <div class="box">
+        <div class="box-h">Reset your password</div>
+        <div class="box-b">
+          <div style="color:#666; font-size:11px; margin-bottom:8px;">Enter the email you used on your account. We'll send a reset link.</div>
+          <label class="lbl">Email:</label>
+          <input id="email" class="txt" type="email" autocomplete="email">
+          <div style="margin-top:10px;">
+            <button id="sendBtn" class="btn">Send reset email</button>
+            <a class="btn secondary" href="./index.html">Cancel</a>
+          </div>
+          <div id="msg" class="notice" style="display:none; margin-top:10px;"></div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+
+  <script type="module">
+    import { resetPassword, prettyError } from "./auth.js";
+    const msg = document.getElementById("msg");
+    const show=(t,g=false)=>{ msg.style.display="block"; msg.className="notice "+(g?"good":"bad"); msg.textContent=t; };
+    document.getElementById("sendBtn").addEventListener("click", async ()=>{
+      msg.style.display="none";
+      try{ await resetPassword(document.getElementById("email").value.trim()); show("Reset email sent! Check your inbox.", true); }
+      catch(e){ show(prettyError(e)); }
+    });
+  </script>
+</body>
+</html>

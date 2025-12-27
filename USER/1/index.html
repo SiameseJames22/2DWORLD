@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>2DWORLD - Profile</title>
+  <link rel="stylesheet" href="../../styles.css" />
+  <style>
+    .panel {
+      background:#f5f5f5;
+      border:1px solid rgba(0,0,0,.35);
+      border-top:none;
+      box-shadow:0 10px 22px rgba(0,0,0,.25);
+      padding:10px;
+    }
+    .profileBox {
+      background:#fff;
+      border:1px solid #b9b9b9;
+      box-shadow:2px 2px 0 rgba(0,0,0,.20);
+      padding:12px;
+    }
+    .profileHeader {
+      display:flex; gap:14px; align-items:center;
+      border-bottom:1px solid #e1e1e1; padding-bottom:10px; margin-bottom:10px;
+    }
+    .profileHeader img { width:96px; height:96px; }
+    .pName { font-size:20px; font-weight:bold; }
+    .pSub { color:#555; font-size:11px; margin-top:6px; }
+    .pActions { margin-left:auto; display:flex; gap:8px; flex-wrap:wrap; }
+    .actBtn {
+      padding:6px 10px; font-weight:bold; border:1px solid #888;
+      background:linear-gradient(#fff,#dedede); cursor:pointer;
+      border-radius:3px;
+    }
+    .actBtn:disabled { opacity:.55; cursor:not-allowed; }
+    .grid {
+      display:grid; grid-template-columns: 1fr 1fr; gap:10px;
+    }
+    .tile {
+      border:1px solid #bbb; background:linear-gradient(#fff,#f2f2f2);
+      box-shadow:2px 2px 0 rgba(0,0,0,.12);
+      padding:10px;
+    }
+    .tile h3 { margin:0 0 6px; font-size:13px; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; font-size:11px; color:#444; }
+  </style>
+</head>
+
+<body>
+  <div id="viewport">
+    <div id="page">
+
+      <div class="top-sky">
+        <div class="topbar">
+          <div class="auth"><a href="../../account.html">Login</a></div>
+
+          <a class="logo" href="../../index.html" aria-label="2DWORLD home">
+            <span class="logo-word">2D</span><span class="logo-world">WORLD</span>
+          </a>
+
+          <a class="signup-cta" href="../../register.html">Sign-up and Play!</a>
+        </div>
+
+        <ul class="nav">
+          <li><a href="../../index.html">My 2DWORLD</a></li>
+          <li><a href="#" onclick="return false;">Worlds</a></li>
+          <li><a href="#" onclick="return false;">Catalog</a></li>
+          <li><a href="../../people.html">People</a></li>
+          <li><a href="#" onclick="return false;">Creator Club</a></li>
+          <li><a href="#" onclick="return false;">Events</a></li>
+          <li><a href="#" onclick="return false;">Forum</a></li>
+          <li><a href="#" onclick="return false;">News</a></li>
+          <li><a href="#" onclick="return false;">Parents</a></li>
+          <li><a href="#" onclick="return false;">Help</a></li>
+        </ul>
+      </div>
+
+      <div class="panel">
+        <div class="profileBox">
+          <div id="loading" class="muted">Loading profile…</div>
+
+          <div id="content" style="display:none;">
+            <div class="profileHeader">
+              <img id="av" class="pixel" alt="Avatar" src="data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2032%2032%22%20shape-rendering%3D%22crispEdges%22%3E%0A%3Crect%20width%3D%2232%22%20height%3D%2232%22%20fill%3D%22transparent%22/%3E%0A%3C%21--%20shadow%20--%3E%0A%3Crect%20x%3D%229%22%20y%3D%2229%22%20width%3D%2214%22%20height%3D%222%22%20fill%3D%22%23000%22%20opacity%3D%22.15%22/%3E%0A%3C%21--%20hat%20--%3E%0A%3Crect%20x%3D%229%22%20y%3D%223%22%20width%3D%2214%22%20height%3D%224%22%20fill%3D%22%23d9493a%22/%3E%0A%3Crect%20x%3D%228%22%20y%3D%227%22%20width%3D%2216%22%20height%3D%222%22%20fill%3D%22%23c13c2f%22/%3E%0A%3C%21--%20head%20--%3E%0A%3Crect%20x%3D%2210%22%20y%3D%229%22%20width%3D%2212%22%20height%3D%2210%22%20fill%3D%22%23f2c39a%22/%3E%0A%3Crect%20x%3D%2211%22%20y%3D%2212%22%20width%3D%222%22%20height%3D%222%22%20fill%3D%22%232b2b2b%22/%3E%0A%3Crect%20x%3D%2219%22%20y%3D%2212%22%20width%3D%222%22%20height%3D%222%22%20fill%3D%22%232b2b2b%22/%3E%0A%3Crect%20x%3D%2213%22%20y%3D%2216%22%20width%3D%226%22%20height%3D%221%22%20fill%3D%22%23c98a63%22/%3E%0A%3C%21--%20body%20--%3E%0A%3Crect%20x%3D%229%22%20y%3D%2219%22%20width%3D%2214%22%20height%3D%227%22%20fill%3D%22%232b7bd4%22/%3E%0A%3Crect%20x%3D%2212%22%20y%3D%2219%22%20width%3D%228%22%20height%3D%227%22%20fill%3D%22%23ffffff%22%20opacity%3D%22.2%22/%3E%0A%3C%21--%20arms%20--%3E%0A%3Crect%20x%3D%226%22%20y%3D%2220%22%20width%3D%223%22%20height%3D%225%22%20fill%3D%22%23f2c39a%22/%3E%0A%3Crect%20x%3D%2223%22%20y%3D%2220%22%20width%3D%223%22%20height%3D%225%22%20fill%3D%22%23f2c39a%22/%3E%0A%3C%21--%20legs%20--%3E%0A%3Crect%20x%3D%2210%22%20y%3D%2226%22%20width%3D%225%22%20height%3D%223%22%20fill%3D%22%233b3b3b%22/%3E%0A%3Crect%20x%3D%2217%22%20y%3D%2226%22%20width%3D%225%22%20height%3D%223%22%20fill%3D%22%233b3b3b%22/%3E%0A%3C%21--%20shoes%20--%3E%0A%3Crect%20x%3D%229%22%20y%3D%2229%22%20width%3D%227%22%20height%3D%222%22%20fill%3D%22%23111%22/%3E%0A%3Crect%20x%3D%2216%22%20y%3D%2229%22%20width%3D%227%22%20height%3D%222%22%20fill%3D%22%23111%22/%3E%0A%3C/svg%3E">
+              <div>
+                <div class="pName" id="name">—</div>
+                <div class="pSub" id="sub">—</div>
+                <div class="pSub mono" id="path">—</div>
+              </div>
+
+              <div class="pActions">
+                <button class="actBtn" disabled>Send Message</button>
+                <button class="actBtn" disabled>Add Friend</button>
+                <button class="actBtn" disabled>Follow</button>
+              </div>
+            </div>
+
+            <div class="grid">
+              <div class="tile">
+                <h3>About</h3>
+                <div class="muted">This profile is public. More sections (badges, worlds, favorites) can be added later.</div>
+              </div>
+              <div class="tile">
+                <h3>Stats</h3>
+                <div class="muted">Worlds: —<br>Visits: —<br>Favorites: —</div>
+              </div>
+            </div>
+          </div>
+
+          <div id="error" class="muted" style="display:none;">
+            Profile not found.
+            <div style="margin-top:10px;">
+              <a class="mini-btn" href="../../people.html">Back to People</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div class="foot-links">
+          <a href="#" onclick="return false;"><b>Privacy Policy</b></a> | <a href="#" onclick="return false;">Advertise</a> |
+          <a href="#" onclick="return false;">Press</a> | <a href="#" onclick="return false;">Contact</a> |
+          <a href="#" onclick="return false;">About</a> | <a href="#" onclick="return false;">Free Worlds</a> |
+          <a href="#" onclick="return false;">Jobs</a>
+        </div>
+        <div class="legal">
+          2DWORLD © <span id="y"></span>. This site is not affiliated with Roblox Corporation.<br>
+          Use of this site signifies your acceptance of the Terms and Conditions.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>document.getElementById("y").textContent = new Date().getFullYear();</script>
+
+  <script type="module">
+    import { db } from "../../firebase.js";
+    import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+    const MALE = "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2032%2032%22%20shape-rendering%3D%22crispEdges%22%3E%0A%3Crect%20width%3D%2232%22%20height%3D%2232%22%20fill%3D%22transparent%22/%3E%0A%3C%21--%20shadow%20--%3E%0A%3Crect%20x%3D%229%22%20y%3D%2229%22%20width%3D%2214%22%20height%3D%222%22%20fill%3D%22%23000%22%20opacity%3D%22.15%22/%3E%0A%3C%21--%20hat%20--%3E%0A%3Crect%20x%3D%229%22%20y%3D%223%22%20width%3D%2214%22%20height%3D%224%22%20fill%3D%22%23d9493a%22/%3E%0A%3Crect%20x%3D%228%22%20y%3D%227%22%20width%3D%2216%22%20height%3D%222%22%20fill%3D%22%23c13c2f%22/%3E%0A%3C%21--%20head%20--%3E%0A%3Crect%20x%3D%2210%22%20y%3D%229%22%20width%3D%2212%22%20height%3D%2210%22%20fill%3D%22%23f2c39a%22/%3E%0A%3Crect%20x%3D%2211%22%20y%3D%2212%22%20width%3D%222%22%20height%3D%222%22%20fill%3D%22%232b2b2b%22/%3E%0A%3Crect%20x%3D%2219%22%20y%3D%2212%22%20width%3D%222%22%20height%3D%222%22%20fill%3D%22%232b2b2b%22/%3E%0A%3Crect%20x%3D%2213%22%20y%3D%2216%22%20width%3D%226%22%20height%3D%221%22%20fill%3D%22%23c98a63%22/%3E%0A%3C%21--%20body%20--%3E%0A%3Crect%20x%3D%229%22%20y%3D%2219%22%20width%3D%2214%22%20height%3D%227%22%20fill%3D%22%232b7bd4%22/%3E%0A%3Crect%20x%3D%2212%22%20y%3D%2219%22%20width%3D%228%22%20height%3D%227%22%20fill%3D%22%23ffffff%22%20opacity%3D%22.2%22/%3E%0A%3C%21--%20arms%20--%3E%0A%3Crect%20x%3D%226%22%20y%3D%2220%22%20width%3D%223%22%20height%3D%225%22%20fill%3D%22%23f2c39a%22/%3E%0A%3Crect%20x%3D%2223%22%20y%3D%2220%22%20width%3D%223%22%20height%3D%225%22%20fill%3D%22%23f2c39a%22/%3E%0A%3C%21--%20legs%20--%3E%0A%3Crect%20x%3D%2210%22%20y%3D%2226%22%20width%3D%225%22%20height%3D%223%22%20fill%3D%22%233b3b3b%22/%3E%0A%3Crect%20x%3D%2217%22%20y%3D%2226%22%20width%3D%225%22%20height%3D%223%22%20fill%3D%22%233b3b3b%22/%3E%0A%3C%21--%20shoes%20--%3E%0A%3Crect%20x%3D%229%22%20y%3D%2229%22%20width%3D%227%22%20height%3D%222%22%20fill%3D%22%23111%22/%3E%0A%3Crect%20x%3D%2216%22%20y%3D%2229%22%20width%3D%227%22%20height%3D%222%22%20fill%3D%22%23111%22/%3E%0A%3C/svg%3E";
+    const FEMALE = "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2032%2032%22%20shape-rendering%3D%22crispEdges%22%3E%0A%3Crect%20width%3D%2232%22%20height%3D%2232%22%20fill%3D%22transparent%22/%3E%0A%3Crect%20x%3D%229%22%20y%3D%2229%22%20width%3D%2214%22%20height%3D%222%22%20fill%3D%22%23000%22%20opacity%3D%22.15%22/%3E%0A%3C%21--%20hair%20--%3E%0A%3Crect%20x%3D%229%22%20y%3D%223%22%20width%3D%2214%22%20height%3D%225%22%20fill%3D%22%237a34c8%22/%3E%0A%3Crect%20x%3D%228%22%20y%3D%228%22%20width%3D%2216%22%20height%3D%222%22%20fill%3D%22%23642aa6%22/%3E%0A%3C%21--%20head%20--%3E%0A%3Crect%20x%3D%2210%22%20y%3D%2210%22%20width%3D%2212%22%20height%3D%229%22%20fill%3D%22%23f2c39a%22/%3E%0A%3Crect%20x%3D%2211%22%20y%3D%2213%22%20width%3D%222%22%20height%3D%222%22%20fill%3D%22%232b2b2b%22/%3E%0A%3Crect%20x%3D%2219%22%20y%3D%2213%22%20width%3D%222%22%20height%3D%222%22%20fill%3D%22%232b2b2b%22/%3E%0A%3Crect%20x%3D%2213%22%20y%3D%2217%22%20width%3D%226%22%20height%3D%221%22%20fill%3D%22%23c98a63%22/%3E%0A%3C%21--%20body%20--%3E%0A%3Crect%20x%3D%229%22%20y%3D%2219%22%20width%3D%2214%22%20height%3D%227%22%20fill%3D%22%23ff7aa8%22/%3E%0A%3Crect%20x%3D%2212%22%20y%3D%2219%22%20width%3D%228%22%20height%3D%227%22%20fill%3D%22%23ffffff%22%20opacity%3D%22.15%22/%3E%0A%3C%21--%20arms%20--%3E%0A%3Crect%20x%3D%226%22%20y%3D%2220%22%20width%3D%223%22%20height%3D%225%22%20fill%3D%22%23f2c39a%22/%3E%0A%3Crect%20x%3D%2223%22%20y%3D%2220%22%20width%3D%223%22%20height%3D%225%22%20fill%3D%22%23f2c39a%22/%3E%0A%3C%21--%20legs%20--%3E%0A%3Crect%20x%3D%2210%22%20y%3D%2226%22%20width%3D%225%22%20height%3D%223%22%20fill%3D%22%233b3b3b%22/%3E%0A%3Crect%20x%3D%2217%22%20y%3D%2226%22%20width%3D%225%22%20height%3D%223%22%20fill%3D%22%233b3b3b%22/%3E%0A%3C%21--%20shoes%20--%3E%0A%3Crect%20x%3D%229%22%20y%3D%2229%22%20width%3D%227%22%20height%3D%222%22%20fill%3D%22%23111%22/%3E%0A%3Crect%20x%3D%2216%22%20y%3D%2229%22%20width%3D%227%22%20height%3D%222%22%20fill%3D%22%23111%22/%3E%0A%3C/svg%3E";
+
+    const $ = (s) => document.querySelector(s);
+
+    function getUsernameFromUrl() {
+      // Prefer ?u= (what 404.html redirects to), but also support /USER/1/<name>
+      const params = new URLSearchParams(location.search);
+      const q = params.get("u");
+      if (q) return q;
+
+      const p = location.pathname.replace(/\/+$/, "");
+      const parts = p.split("/USER/1/");
+      if (parts.length === 2) {
+        const tail = parts[1].split("/")[0];
+        if (tail) return decodeURIComponent(tail);
+      }
+      return "";
+    }
+
+    function avatarFor(userDoc) {
+      const a = (userDoc && userDoc.avatar) ? String(userDoc.avatar).toLowerCase() : "";
+      const g = (userDoc && userDoc.gender) ? String(userDoc.gender).toLowerCase() : "";
+      if (a === "female" || g === "female") return FEMALE;
+      return MALE;
+    }
+
+    async function load() {
+      const usernameRaw = getUsernameFromUrl();
+      const username = (usernameRaw || "").trim().toLowerCase();
+
+      if (!username) {
+        $("#loading").style.display = "none";
+        $("#error").style.display = "block";
+        return;
+      }
+
+      try {
+        const unameRef = doc(db, "usernames", username);
+        const unameSnap = await getDoc(unameRef);
+
+        if (!unameSnap.exists()) throw new Error("no-username");
+
+        const uid = unameSnap.data().uid;
+        const userSnap = await getDoc(doc(db, "users", uid));
+        const data = userSnap.exists() ? userSnap.data() : null;
+
+        const display = data?.username || usernameRaw || username;
+        document.title = `2DWORLD - ${display}`;
+
+        $("#name").textContent = display;
+        $("#av").src = avatarFor(data);
+        const joined = data?.createdAt?.toDate ? data.createdAt.toDate() : null;
+        $("#sub").innerHTML = `Joined: <b>${joined ? joined.toLocaleDateString() : "—"}</b>`;
+
+        // Show the nice path format
+        $("#path").textContent = `/USER/1/${display}`;
+
+        $("#loading").style.display = "none";
+        $("#content").style.display = "block";
+      } catch (e) {
+        console.error(e);
+        $("#loading").style.display = "none";
+        $("#error").style.display = "block";
+      }
+    }
+
+    load();
+  </script>
+</body>
+</html>

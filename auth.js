@@ -70,7 +70,7 @@ async function claimUsername(uid, username, email, profileData) {
   return u;
 }
 
-export async function register({ username, email, password, birthMonth, birthYear, gender }) {
+export async function register({ username, email, password, birthMonth, birthYear, gender, avatar }) {
   const cred = await createUserWithEmailAndPassword(auth, email, password);
   const user = cred.user;
 
@@ -78,7 +78,8 @@ export async function register({ username, email, password, birthMonth, birthYea
     const claimed = await claimUsername(user.uid, username, email, {
       birthMonth: birthMonth || null,
       birthYear: birthYear || null,
-      gender: gender || null
+      gender: gender || null,
+      avatar: avatar || null
     });
     await updateProfile(user, { displayName: claimed });
   } catch (e) {

@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>2DWORLD</title>
+</head>
+<body style="font-family:Tahoma,Arial,sans-serif; background:#0a3f9b; color:#fff; padding:18px;">
+  <b>Redirecting…</b>
+  <script>
+    (function () {
+      // GitHub Pages serves this 404 for unknown routes. We use it to support:
+      //   /USER/1/<username>
+      // by redirecting to:
+      //   /USER/1/?u=<username>
+      const p = location.pathname.replace(/\/+$/, "");
+      const parts = p.split("/USER/1/");
+      const base = parts[0] + "/"; // e.g. "/2DWORLD/"
+
+      if (parts.length === 2 && parts[1]) {
+        const username = parts[1].split("/")[0];
+        location.replace(base + "USER/1/?u=" + encodeURIComponent(decodeURIComponent(username)));
+        return;
+      }
+
+      // fallback to homepage
+      location.replace(base + "index.html");
+    })();
+  </script>
+</body>
+</html>

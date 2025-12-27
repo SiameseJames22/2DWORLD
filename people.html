@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>2DWORLD - People</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .panel {
+      background:#f5f5f5;
+      border:1px solid rgba(0,0,0,.35);
+      border-top:none;
+      box-shadow:0 10px 22px rgba(0,0,0,.25);
+      padding:10px;
+    }
+    .bar {
+      background:linear-gradient(#f7f7f7,#dfdfdf);
+      border:1px solid #bdbdbd;
+      padding:8px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      margin-bottom:10px;
+    }
+    .bar b{ margin-right:6px; }
+    .results {
+      background:#fff;
+      border:1px solid #b9b9b9;
+      box-shadow:2px 2px 0 rgba(0,0,0,.20);
+      padding:10px;
+      min-height:440px;
+    }
+    .hint {
+      color:#666; font-size:11px; margin-top:6px;
+    }
+    .pill {
+      display:inline-block; padding:2px 6px;
+      border:1px solid #bbb; background:linear-gradient(#fff,#ededed);
+      font-size:10px; border-radius:999px; margin-left:6px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="viewport">
+    <div id="page">
+
+      <div class="top-sky">
+        <div class="topbar">
+          <div class="auth"><a href="account.html">Login</a></div>
+
+          <a class="logo" href="index.html" aria-label="2DWORLD home">
+            <span class="logo-word">2D</span><span class="logo-world">WORLD</span>
+          </a>
+
+          <a class="signup-cta" href="register.html">Sign-up and Play!</a>
+        </div>
+
+        <ul class="nav">
+          <li><a href="index.html">My 2DWORLD</a></li>
+          <li><a href="#" onclick="return false;">Worlds</a></li>
+          <li><a href="#" onclick="return false;">Catalog</a></li>
+          <li><a href="people.html" class="active">People</a></li>
+          <li><a href="#" onclick="return false;">Creator Club</a></li>
+          <li><a href="#" onclick="return false;">Events</a></li>
+          <li><a href="#" onclick="return false;">Forum</a></li>
+          <li><a href="#" onclick="return false;">News</a></li>
+          <li><a href="#" onclick="return false;">Parents</a></li>
+          <li><a href="#" onclick="return false;">Help</a></li>
+        </ul>
+      </div>
+
+      <div class="panel">
+        <div class="bar">
+          <b>Search:</b>
+          <input id="q" class="txt" type="text" placeholder="Search users..." autocomplete="off" />
+          <button id="btnUsers" class="smallBtn" type="button">Search Users</button>
+          <button class="smallBtn" type="button" disabled title="Coming soon">Search Worlds</button>
+          <span id="status" class="pill" style="display:none;"></span>
+        </div>
+
+        <div class="results">
+          <div id="empty" class="muted">
+            Type a username and press <b>Search Users</b>.<br>
+            <div class="hint">Tip: searching works best with the start of a name (example: <b>mum</b>).</div>
+          </div>
+          <div id="list"></div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div class="foot-links">
+          <a href="#" onclick="return false;"><b>Privacy Policy</b></a> | <a href="#" onclick="return false;">Advertise</a> |
+          <a href="#" onclick="return false;">Press</a> | <a href="#" onclick="return false;">Contact</a> |
+          <a href="#" onclick="return false;">About</a> | <a href="#" onclick="return false;">Free Worlds</a> |
+          <a href="#" onclick="return false;">Jobs</a>
+        </div>
+        <div class="legal">
+          2DWORLD © <span id="y"></span>. This site is not affiliated with Roblox Corporation.<br>
+          Use of this site signifies your acceptance of the Terms and Conditions.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>document.getElementById("y").textContent = new Date().getFullYear();</script>
+
+  <script type="module">
+    import { db } from "./firebase.js";
+    import {
+      collection, getDocs, getDoc, doc, query, orderBy, startAt, endAt, limit,
+      documentId
+    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+    const MALE = "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2032%2032%22%20shape-rendering%3D%22crispEdges%22%3E%0A%3Crect%20width%3D%2232%22%20height%3D%2232%22%20fill%3D%22transparent%22/%3E%0A%3C%21--%20shadow%20--%3E%0A%3Crect%20x%3D%229%22%20y%3D%2229%22%20width%3D%2214%22%20height%3D%222%22%20fill%3D%22%23000%22%20opacity%3D%22.15%22/%3E%0A%3C%21--%20hat%20--%3E%0A%3Crect%20x%3D%229%22%20y%3D%223%22%20width%3D%2214%22%20height%3D%224%22%20fill%3D%22%23d9493a%22/%3E%0A%3Crect%20x%3D%228%22%20y%3D%227%22%20width%3D%2216%22%20height%3D%222%22%20fill%3D%22%23c13c2f%22/%3E%0A%3C%21--%20head%20--%3E%0A%3Crect%20x%3D%2210%22%20y%3D%229%22%20width%3D%2212%22%20height%3D%2210%22%20fill%3D%22%23f2c39a%22/%3E%0A%3Crect%20x%3D%2211%22%20y%3D%2212%22%20width%3D%222%22%20height%3D%222%22%20fill%3D%22%232b2b2b%22/%3E%0A%3Crect%20x%3D%2219%22%20y%3D%2212%22%20width%3D%222%22%20height%3D%222%22%20fill%3D%22%232b2b2b%22/%3E%0A%3Crect%20x%3D%2213%22%20y%3D%2216%22%20width%3D%226%22%20height%3D%221%22%20fill%3D%22%23c98a63%22/%3E%0A%3C%21--%20body%20--%3E%0A%3Crect%20x%3D%229%22%20y%3D%2219%22%20width%3D%2214%22%20height%3D%227%22%20fill%3D%22%232b7bd4%22/%3E%0A%3Crect%20x%3D%2212%22%20y%3D%2219%22%20width%3D%228%22%20height%3D%227%22%20fill%3D%22%23ffffff%22%20opacity%3D%22.2%22/%3E%0A%3C%21--%20arms%20--%3E%0A%3Crect%20x%3D%226%22%20y%3D%2220%22%20width%3D%223%22%20height%3D%225%22%20fill%3D%22%23f2c39a%22/%3E%0A%3Crect%20x%3D%2223%22%20y%3D%2220%22%20width%3D%223%22%20height%3D%225%22%20fill%3D%22%23f2c39a%22/%3E%0A%3C%21--%20legs%20--%3E%0A%3Crect%20x%3D%2210%22%20y%3D%2226%22%20width%3D%225%22%20height%3D%223%22%20fill%3D%22%233b3b3b%22/%3E%0A%3Crect%20x%3D%2217%22%20y%3D%2226%22%20width%3D%225%22%20height%3D%223%22%20fill%3D%22%233b3b3b%22/%3E%0A%3C%21--%20shoes%20--%3E%0A%3Crect%20x%3D%229%22%20y%3D%2229%22%20width%3D%227%22%20height%3D%222%22%20fill%3D%22%23111%22/%3E%0A%3Crect%20x%3D%2216%22%20y%3D%2229%22%20width%3D%227%22%20height%3D%222%22%20fill%3D%22%23111%22/%3E%0A%3C/svg%3E";
+    const FEMALE = "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2032%2032%22%20shape-rendering%3D%22crispEdges%22%3E%0A%3Crect%20width%3D%2232%22%20height%3D%2232%22%20fill%3D%22transparent%22/%3E%0A%3Crect%20x%3D%229%22%20y%3D%2229%22%20width%3D%2214%22%20height%3D%222%22%20fill%3D%22%23000%22%20opacity%3D%22.15%22/%3E%0A%3C%21--%20hair%20--%3E%0A%3Crect%20x%3D%229%22%20y%3D%223%22%20width%3D%2214%22%20height%3D%225%22%20fill%3D%22%237a34c8%22/%3E%0A%3Crect%20x%3D%228%22%20y%3D%228%22%20width%3D%2216%22%20height%3D%222%22%20fill%3D%22%23642aa6%22/%3E%0A%3C%21--%20head%20--%3E%0A%3Crect%20x%3D%2210%22%20y%3D%2210%22%20width%3D%2212%22%20height%3D%229%22%20fill%3D%22%23f2c39a%22/%3E%0A%3Crect%20x%3D%2211%22%20y%3D%2213%22%20width%3D%222%22%20height%3D%222%22%20fill%3D%22%232b2b2b%22/%3E%0A%3Crect%20x%3D%2219%22%20y%3D%2213%22%20width%3D%222%22%20height%3D%222%22%20fill%3D%22%232b2b2b%22/%3E%0A%3Crect%20x%3D%2213%22%20y%3D%2217%22%20width%3D%226%22%20height%3D%221%22%20fill%3D%22%23c98a63%22/%3E%0A%3C%21--%20body%20--%3E%0A%3Crect%20x%3D%229%22%20y%3D%2219%22%20width%3D%2214%22%20height%3D%227%22%20fill%3D%22%23ff7aa8%22/%3E%0A%3Crect%20x%3D%2212%22%20y%3D%2219%22%20width%3D%228%22%20height%3D%227%22%20fill%3D%22%23ffffff%22%20opacity%3D%22.15%22/%3E%0A%3C%21--%20arms%20--%3E%0A%3Crect%20x%3D%226%22%20y%3D%2220%22%20width%3D%223%22%20height%3D%225%22%20fill%3D%22%23f2c39a%22/%3E%0A%3Crect%20x%3D%2223%22%20y%3D%2220%22%20width%3D%223%22%20height%3D%225%22%20fill%3D%22%23f2c39a%22/%3E%0A%3C%21--%20legs%20--%3E%0A%3Crect%20x%3D%2210%22%20y%3D%2226%22%20width%3D%225%22%20height%3D%223%22%20fill%3D%22%233b3b3b%22/%3E%0A%3Crect%20x%3D%2217%22%20y%3D%2226%22%20width%3D%225%22%20height%3D%223%22%20fill%3D%22%233b3b3b%22/%3E%0A%3C%21--%20shoes%20--%3E%0A%3Crect%20x%3D%229%22%20y%3D%2229%22%20width%3D%227%22%20height%3D%222%22%20fill%3D%22%23111%22/%3E%0A%3Crect%20x%3D%2216%22%20y%3D%2229%22%20width%3D%227%22%20height%3D%222%22%20fill%3D%22%23111%22/%3E%0A%3C/svg%3E";
+
+    const $ = (s) => document.querySelector(s);
+    const qEl = $("#q");
+    const listEl = $("#list");
+    const emptyEl = $("#empty");
+    const statusEl = $("#status");
+
+    function setStatus(txt) {
+      if (!txt) { statusEl.style.display = "none"; statusEl.textContent = ""; return; }
+      statusEl.style.display = "inline-block";
+      statusEl.textContent = txt;
+    }
+
+    function avatarFor(userDoc) {
+      const a = (userDoc && userDoc.avatar) ? String(userDoc.avatar).toLowerCase() : "";
+      const g = (userDoc && userDoc.gender) ? String(userDoc.gender).toLowerCase() : "";
+      if (a === "female" || g === "female") return FEMALE;
+      return MALE;
+    }
+
+    function cardHtml(username, userDoc) {
+      const av = avatarFor(userDoc);
+      const uSafe = username;
+      const joined = userDoc?.createdAt?.toDate ? userDoc.createdAt.toDate() : null;
+      const joinedTxt = joined ? joined.toLocaleDateString() : "—";
+
+      const profileUrl = `USER/1/${encodeURIComponent(uSafe)}`;
+      return `
+        <div class="userCard">
+          <div>
+            <img class="pixel avatarSmall" alt="Avatar" src="${av}">
+          </div>
+          <div class="userMeta">
+            <div class="name"><a href="${profileUrl}">${uSafe}</a></div>
+            <div class="sub">Joined: <b>${joinedTxt}</b></div>
+            <div class="sub muted">Profile: <span style="font-family:monospace;">/USER/1/${uSafe}</span></div>
+          </div>
+        </div>
+      `;
+    }
+
+    async function searchUsers(prefixRaw) {
+      const prefix = (prefixRaw || "").trim().toLowerCase();
+      listEl.innerHTML = "";
+      emptyEl.style.display = "none";
+
+      if (!prefix) {
+        emptyEl.style.display = "block";
+        setStatus("");
+        return;
+      }
+
+      setStatus("Searching…");
+
+      try {
+        const q = query(
+          collection(db, "usernames"),
+          orderBy(documentId()),
+          startAt(prefix),
+          endAt(prefix + "\uf8ff"),
+          limit(25)
+        );
+
+        const snaps = await getDocs(q);
+        const hits = [];
+        snaps.forEach((d) => hits.push({ uname: d.id, uid: d.data().uid }));
+
+        if (!hits.length) {
+          listEl.innerHTML = `<div class="muted">No users found for <b>${prefixRaw}</b>.</div>`;
+          setStatus("0 results");
+          return;
+        }
+
+        // Pull user docs for richer display
+        const userDocs = await Promise.all(
+          hits.map(async (h) => {
+            try {
+              const u = await getDoc(doc(db, "users", h.uid));
+              return { uname: h.uname, data: u.exists() ? u.data() : null };
+            } catch {
+              return { uname: h.uname, data: null };
+            }
+          })
+        );
+
+        // show, but prefer display username from profile doc if it exists
+        const html = userDocs.map(({
+          uname, data
+        }) => {
+          const displayName = data?.username || uname;
+          return cardHtml(displayName, data);
+        }).join("");
+
+        listEl.innerHTML = html;
+        setStatus(`${hits.length} result${hits.length === 1 ? "" : "s"}`);
+      } catch (e) {
+        console.error(e);
+        listEl.innerHTML = `<div class="muted">Search failed. Check your Firebase config + Firestore rules.</div>`;
+        setStatus("Error");
+      }
+    }
+
+    $("#btnUsers").addEventListener("click", () => searchUsers(qEl.value));
+    qEl.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") searchUsers(qEl.value);
+    });
+
+    // Support ?q= in the URL
+    const params = new URLSearchParams(location.search);
+    if (params.get("q")) {
+      qEl.value = params.get("q");
+      searchUsers(qEl.value);
+    }
+  </script>
+</body>
+</html>

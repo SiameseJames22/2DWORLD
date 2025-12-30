@@ -13,29 +13,27 @@ import {
 
 const btn = document.getElementById("continueBtn");
 
-btn.onclick = async () => {
+btn.addEventListener("click", async () => {
   const username = document.getElementById("username").value.trim().toLowerCase();
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value;
-  const gender = document.querySelector("input[name='gender']:checked")?.value || "other";
+  const gender =
+    document.querySelector("input[name='gender']:checked")?.value || "other";
 
   if (!username || !email || !password) {
-    alert("Fill in all fields");
+    alert("Fill in all fields.");
     return;
   }
 
   try {
-    // 1. Create auth account
     const cred = await createUserWithEmailAndPassword(auth, email, password);
     const user = cred.user;
 
-    // 2. Save username lookup
     await setDoc(doc(db, "usernames", username), {
       uid: user.uid,
       createdAt: serverTimestamp()
     });
 
-    // 3. Save public profile
     await setDoc(doc(db, "users", user.uid), {
       username,
       gender,
@@ -43,15 +41,13 @@ btn.onclick = async () => {
       joinedAt: serverTimestamp()
     });
 
-    // 4. Verify email
     await sendEmailVerification(user);
 
-    alert("Account created! Verify your email.");
+    alert("Account created! Please verify your email.");
     location.href = "index.html";
-
   } catch (err) {
     console.error(err);
     alert(err.message);
   }
-};
+});
 </script>

@@ -1,13 +1,3 @@
-Drop these files into your repo ROOT (same place as index.html):
-- firebase.js
-- people.html
-- 404.html
 
-Then commit + push.
-
-Also change the People button in your nav (index.html etc) to:
-  href="people.html"
-
-This pack fixes:
-- People search error: FirebaseError: Expected first argument to collection()...
-- Public search + profiles work even when NOT logged in (uses only the `usernames` collection, which your rules allow to read).
+UPLOAD ALL FILES.
+This fixes the issue where only INSTALL.txt appeared.

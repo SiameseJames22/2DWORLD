@@ -1,0 +1,32 @@
+
+<!doctype html>
+<html>
+<head><title>Create World</title></head>
+<body>
+<h2>Create a World</h2>
+<input id="name" placeholder="World name"><br><br>
+<textarea id="desc" placeholder="Description"></textarea><br><br>
+<button id="create">Create</button>
+
+<script type="module">
+import { auth, db } from "./firebase.js";
+import { addDoc, collection, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+
+onAuthStateChanged(auth, user => {
+  if(!user){ alert("Login required"); location.href="index.html"; }
+
+  document.getElementById("create").onclick = async () => {
+    await addDoc(collection(db,"worlds"),{
+      name: name.value,
+      description: desc.value,
+      creatorUid: user.uid,
+      createdAt: serverTimestamp(),
+      visits: 0
+    });
+    alert("World created");
+  };
+});
+</script>
+</body>
+</html>

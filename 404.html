@@ -3,29 +3,258 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>2DWORLD</title>
+  <title>2DWORLD - Profile</title>
+  <style>body{ margin:0; font:12px/1.2 Tahoma, Arial, sans-serif; background:#042765; }</style>
 </head>
-<body style="font-family:Tahoma,Arial,sans-serif; background:#0a3f9b; color:#fff; padding:18px;">
-  <b>Redirecting…</b>
-  <script>
-    (function () {
-      // GitHub Pages serves this 404 for unknown routes. We use it to support:
-      //   /USER/1/<username>
-      // by redirecting to:
-      //   /USER/1/?u=<username>
-      const p = location.pathname.replace(/\/+$/, "");
-      const parts = p.split("/USER/1/");
-      const base = parts[0] + "/"; // e.g. "/2DWORLD/"
 
-      if (parts.length === 2 && parts[1]) {
-        const username = parts[1].split("/")[0];
-        location.replace(base + "USER/1/?u=" + encodeURIComponent(decodeURIComponent(username)));
+<body>
+  <div id="viewport">
+    <div id="page">
+      <div class="top-sky">
+        <div class="topbar">
+          <div class="auth"><a data-href="/account.html" href="#">Login</a></div>
+
+          <a class="logo" data-href="/index.html" href="#" aria-label="2DWORLD home">
+            <span class="logo-word">2D</span><span class="logo-world">WORLD</span>
+          </a>
+
+          <a class="signup-cta" data-href="/register.html" href="#">Sign-up and Play!</a>
+        </div>
+
+        <ul class="nav">
+          <li><a data-href="/index.html" href="#">My 2DWORLD</a></li>
+          <li><a href="#" onclick="return false;">Worlds</a></li>
+          <li><a href="#" onclick="return false;">Catalog</a></li>
+          <li><a data-href="/people.html" href="#">People</a></li>
+          <li><a href="#" onclick="return false;">Creator Club</a></li>
+          <li><a href="#" onclick="return false;">Events</a></li>
+          <li><a href="#" onclick="return false;">Forum</a></li>
+          <li><a href="#" onclick="return false;">News</a></li>
+          <li><a href="#" onclick="return false;">Parents</a></li>
+          <li><a href="#" onclick="return false;">Help</a></li>
+        </ul>
+      </div>
+
+      <div class="panel">
+        <div class="profileBox" id="app">
+          <div class="muted">Loading profile…</div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div class="foot-links">
+          <a href="#" onclick="return false;"><b>Privacy Policy</b></a> | <a href="#" onclick="return false;">Advertise</a> |
+          <a href="#" onclick="return false;">Press</a> | <a href="#" onclick="return false;">Contact</a> |
+          <a href="#" onclick="return false;">About</a> | <a href="#" onclick="return false;">Free Worlds</a> |
+          <a href="#" onclick="return false;">Jobs</a>
+        </div>
+        <div class="legal">
+          2DWORLD © <span id="y"></span>. This site is not affiliated with Roblox Corporation.<br>
+          Use of this site signifies your acceptance of the Terms and Conditions.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    function detectBasePath() {
+      const parts = location.pathname.split("/").filter(Boolean);
+      if (parts.length >= 2 && parts[1].toLowerCase() === "user") return "/" + parts[0]; // /REPO/USER/...
+      if (parts.length >= 1 && parts[0].toLowerCase() === "user") return ""; // /USER/... (custom domain root)
+      return parts.length ? "/" + parts[0] : "";
+    }
+    const BASE = detectBasePath();
+
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = BASE + "/styles.css";
+    document.head.appendChild(link);
+
+    document.querySelectorAll("[data-href]").forEach(a => {
+      a.href = BASE + a.getAttribute("data-href");
+    });
+
+    document.getElementById("y").textContent = new Date().getFullYear();
+  </script>
+
+  <script type="module">
+    function detectBasePath() {
+      const parts = location.pathname.split("/").filter(Boolean);
+      if (parts.length >= 2 && parts[1].toLowerCase() === "user") return "/" + parts[0];
+      if (parts.length >= 1 && parts[0].toLowerCase() === "user") return "";
+      return parts.length ? "/" + parts[0] : "";
+    }
+    const BASE = detectBasePath();
+
+    const app = document.getElementById("app");
+
+    const { db } = await import(BASE + "/firebase.js");
+    const { getDoc, doc } = await import("https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js");
+
+    const MALE = "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2032%2032%22%20shape-rendering=%22crispEdges%22%3E%0A%3Crect%20width=%2232%22%20height=%2232%22%20fill=%22transparent%22/%3E%0A%3Crect%20x=%229%22%20y=%2229%22%20width=%2214%22%20height=%222%22%20fill=%22%23000%22%20opacity=%22.15%22/%3E%0A%3C!--%20hat%20--%3E%0A%3Crect%20x=%229%22%20y=%223%22%20width=%2214%22%20height=%224%22%20fill=%22%23d9493a%22/%3E%3Crect%20x=%228%22%20y=%227%22%20width=%2216%22%20height=%222%22%20fill=%22%23c13c2f%22/%3E%0A%3C!--%20face%20--%3E%0A%3Crect%20x=%2210%22%20y=%229%22%20width=%2212%22%20height=%2210%22%20fill=%22%23f2c39a%22/%3E%0A%3Crect%20x=%2211%22%20y=%2212%22%20width=%222%22%20height=%222%22%20fill=%22%232b2b2b%22/%3E%3Crect%20x=%2219%22%20y=%2212%22%20width=%222%22%20height=%222%22%20fill=%22%232b2b2b%22/%3E%0A%3Crect%20x=%2213%22%20y=%2216%22%20width=%226%22%20height=%221%22%20fill=%22%23c98a63%22/%3E%0A%3C!--%20shirt%20--%3E%0A%3Crect%20x=%229%22%20y=%2219%22%20width=%2214%22%20height=%227%22%20fill=%22%232b7bd4%22/%3E%0A%3Crect%20x=%226%22%20y=%2220%22%20width=%223%22%20height=%225%22%20fill=%22%23f2c39a%22/%3E%3Crect%20x=%2223%22%20y=%2220%22%20width=%223%22%20height=%225%22%20fill=%22%23f2c39a%22/%3E%0A%3C!--%20legs%20--%3E%0A%3Crect%20x=%2210%22%20y=%2226%22%20width=%225%22%20height=%223%22%20fill=%22%233b3b3b%22/%3E%3Crect%20x=%2217%22%20y=%2226%22%20width=%225%22%20height=%223%22%20fill=%22%233b3b3b%22/%3E%0A%3Crect%20x=%229%22%20y=%2229%22%20width=%227%22%20height=%222%22%20fill=%22%23111%22/%3E%3Crect%20x=%2216%22%20y=%2229%22%20width=%227%22%20height=%222%22%20fill=%22%23111%22/%3E%0A%3C/svg%3E";
+    const FEMALE = "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns=%22http://www.w3.org/2000/svg%22%20viewBox=%220%200%2032%2032%22%20shape-rendering=%22crispEdges%22%3E%0A%3Crect%20width=%2232%22%20height=%2232%22%20fill=%22transparent%22/%3E%0A%3Crect%20x=%229%22%20y=%2229%22%20width=%2214%22%20height=%222%22%20fill=%22%23000%22%20opacity=%22.15%22/%3E%0A%3C!--%20hair%20--%3E%0A%3Crect%20x=%229%22%20y=%223%22%20width=%2214%22%20height=%225%22%20fill=%22%237a34c8%22/%3E%3Crect%20x=%228%22%20y=%228%22%20width=%2216%22%20height=%222%22%20fill=%22%23642aa6%22/%3E%0A%3C!--%20face%20--%3E%0A%3Crect%20x=%2210%22%20y=%2210%22%20width=%2212%22%20height=%229%22%20fill=%22%23f2c39a%22/%3E%0A%3Crect%20x=%2211%22%20y=%2213%22%20width=%222%22%20height=%222%22%20fill=%22%232b2b2b%22/%3E%3Crect%20x=%2219%22%20y=%2213%22%20width=%222%22%20height=%222%22%20fill=%22%232b2b2b%22/%3E%0A%3Crect%20x=%2213%22%20y=%2217%22%20width=%226%22%20height=%221%22%20fill=%22%23c98a63%22/%3E%0A%3C!--%20dress%20--%3E%0A%3Crect%20x=%229%22%20y=%2219%22%20width=%2214%22%20height=%227%22%20fill=%22%23ff7aa8%22/%3E%0A%3Crect%20x=%226%22%20y=%2220%22%20width=%223%22%20height=%225%22%20fill=%22%23f2c39a%22/%3E%3Crect%20x=%2223%22%20y=%2220%22%20width=%223%22%20height=%225%22%20fill=%22%23f2c39a%22/%3E%0A%3C!--%20legs%20--%3E%0A%3Crect%20x=%2210%22%20y=%2226%22%20width=%225%22%20height=%223%22%20fill=%22%233b3b3b%22/%3E%3Crect%20x=%2217%22%20y=%2226%22%20width=%225%22%20height=%223%22%20fill=%22%233b3b3b%22/%3E%0A%3Crect%20x=%229%22%20y=%2229%22%20width=%227%22%20height=%222%22%20fill=%22%23111%22/%3E%3Crect%20x=%2216%22%20y=%2229%22%20width=%227%22%20height=%222%22%20fill=%22%23111%22/%3E%0A%3C/svg%3E";
+
+    function getUsernameFromPath() {
+      const parts = location.pathname.split("/").filter(Boolean);
+      const idx = parts.findIndex(p => p.toLowerCase() === "user");
+      if (idx === -1) return null;
+      const username = parts[idx + 2]; // USER / 1 / username
+      return username ? decodeURIComponent(username) : null;
+    }
+
+    function avatarForPublic(unameData) {
+      const g = (unameData && unameData.gender) ? String(unameData.gender).toLowerCase() : "";
+      if (g === "female") return FEMALE;
+      return MALE;
+    }
+
+    function toDateSafe(ts) {
+      try {
+        if (ts && typeof ts.toDate === "function") return ts.toDate();
+      } catch {}
+      return null;
+    }
+
+    async function renderProfile(username) {
+      if (!username) {
+        app.innerHTML = `
+          <div class="muted">
+            That page doesn’t exist.<br><br>
+            Go to <a href="${BASE}/people.html">People</a> to search users.
+          </div>
+        `;
         return;
       }
 
-      // fallback to homepage
-      location.replace(base + "index.html");
-    })();
+      try {
+        const unameLower = String(username).toLowerCase();
+        const unameDoc = await getDoc(doc(db, "usernames", unameLower));
+        if (!unameDoc.exists()) {
+          app.innerHTML = `
+            <div class="muted">
+              User <b>${username}</b> not found.<br><br>
+              <a class="smallBtn" href="${BASE}/people.html?q=${encodeURIComponent(username)}">Search People</a>
+            </div>
+          `;
+          return;
+        }
+
+        const data = unameDoc.data();
+        const joined = toDateSafe(data?.createdAt);
+        const joinedTxt = joined ? joined.toLocaleDateString() : "—";
+        const av = avatarForPublic(data);
+
+        app.innerHTML = `
+          <div class="row">
+            <img class="bigAvatar" src="${av}" alt="Avatar">
+            <div>
+              <div class="username">${unameLower}</div>
+              <div class="line">Joined: <b>${joinedTxt}</b></div>
+              <div class="line">Profile URL: <span class="mono">/USER/1/${unameLower}</span></div>
+              <div class="line muted">This is a public profile page.</div>
+              <div class="btnRow">
+                <button class="smallBtn" onclick="location.href='${BASE}/people.html?q=${encodeURIComponent(unameLower)}'">Back to People</button>
+              </div>
+            </div>
+          </div>
+        `;
+      } catch (e) {
+        console.error(e);
+        app.innerHTML = `<div class="muted">Profile failed to load. Check console + Firestore rules.</div>`;
+      }
+    }
+
+    renderProfile(getUsernameFromPath());
   </script>
+
+  <style>
+    /* Minimal styles so the profile looks right even if styles.css fails */
+    #viewport{ width:100%; display:flex; justify-content:center; padding:14px 0 40px; }
+    #page{ width:900px; transform:scale(1.30); transform-origin: top center; }
+    .top-sky{
+      background:
+        radial-gradient(600px 220px at 50% 35%, rgba(255,255,255,.35), rgba(255,255,255,0) 65%),
+        linear-gradient(#1f84e8, #0e4ea4);
+      border:1px solid rgba(255,255,255,.25);
+      box-shadow:0 6px 16px rgba(0,0,0,.28);
+    }
+    .topbar{ position:relative; height:88px; padding:8px 10px; }
+    .auth{
+      position:absolute; top:10px; left:12px;
+      background:rgba(255,255,255,.85);
+      border:1px solid rgba(0,0,0,.15);
+      padding:2px 6px; border-radius:2px; font-weight:bold;
+    }
+    .logo{
+      display:inline-block; margin:8px auto 0; text-align:center; width:100%;
+      font-family: Impact, Arial Black, sans-serif; letter-spacing:1px;
+      text-decoration:none;
+    }
+    .logo-word{ font-size:48px; color:#fff; text-shadow:0 2px 0 rgba(0,0,0,.25); }
+    .logo-world{ font-size:48px; color:#ff4a3a; text-shadow:0 2px 0 rgba(0,0,0,.25); }
+    .signup-cta{
+      position:absolute; right:10px; top:16px;
+      width:210px; height:40px; display:flex; align-items:center; justify-content:center;
+      font-weight:bold; color:#0b2b66; text-shadow:0 1px 0 rgba(255,255,255,.7);
+      border:1px solid rgba(0,0,0,.25); border-radius:4px;
+      background:linear-gradient(#fff4b8, #ffb53a);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.65), 0 2px 0 rgba(0,0,0,.12);
+      text-decoration:none;
+    }
+    .nav{
+      list-style:none; margin:0; padding:0 6px; display:flex; gap:2px;
+      background:linear-gradient(#1b67c9, #0e4ea4);
+      border-top:1px solid rgba(255,255,255,.22);
+      border-bottom:1px solid rgba(0,0,0,.35);
+    }
+    .nav a{
+      display:block; padding:7px 10px; color:#fff; font-weight:bold;
+      text-shadow:0 1px 0 rgba(0,0,0,.35);
+      text-decoration:none;
+    }
+    .nav a:hover{ background:rgba(255,255,255,.10); }
+    .panel{
+      background:#f5f5f5;
+      border:1px solid rgba(0,0,0,.35);
+      border-top:none;
+      box-shadow:0 10px 22px rgba(0,0,0,.25);
+      padding:10px;
+    }
+    .profileBox{
+      background:#fff;
+      border:1px solid #b9b9b9;
+      box-shadow:2px 2px 0 rgba(0,0,0,.20);
+      padding:14px;
+      min-height:440px;
+    }
+    .row{ display:flex; gap:14px; align-items:flex-start; }
+    .bigAvatar{
+      width:96px; height:96px;
+      border:1px solid #aaa;
+      background:#fff;
+      image-rendering: pixelated;
+    }
+    .username{ font-size:22px; font-weight:bold; margin-bottom:6px; }
+    .line{ font-size:12px; margin:4px 0; color:#333; }
+    .mono{ font-family:monospace; }
+    .muted{ color:#666; font-size:11px; }
+    .btnRow{ margin-top:10px; display:flex; gap:8px; flex-wrap:wrap; }
+    .smallBtn{
+      padding:6px 10px;
+      border:1px solid #888;
+      background:linear-gradient(#fff,#e9e9e9);
+      cursor:pointer;
+      font:12px Tahoma, Arial, sans-serif;
+      font-weight:bold;
+    }
+    .footer{
+      margin-top:10px; padding:10px 8px 16px; background:#f5f5f5;
+      border:1px solid rgba(0,0,0,.35); box-shadow:0 10px 22px rgba(0,0,0,.25);
+      text-align:center;
+    }
+    .foot-links{ font-size:11px; }
+    .legal{ margin-top:10px; font-size:10px; color:#444; }
+  </style>
 </body>
 </html>

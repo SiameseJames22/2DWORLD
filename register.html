@@ -5,6 +5,45 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>2DWORLD – Sign Up</title>
   <link rel="stylesheet" href="styles.css" />
+  <style>
+    .signupWrap{ background:#f5f5f5; border:1px solid rgba(0,0,0,.35); border-top:none; box-shadow:0 10px 22px rgba(0,0,0,.25); padding:12px; }
+    .signupGrid{ display:grid; grid-template-columns: 320px 1fr; gap:12px; }
+    .box2{ background:#fff; border:1px solid #b9b9b9; box-shadow:2px 2px 0 rgba(0,0,0,.20); }
+    .box2h{ padding:8px 10px; font-weight:bold; color:#fff; background:linear-gradient(#3b3b3b,#1f1f1f); border-bottom:1px solid #000; }
+    .box2b{ padding:10px; }
+    .row{ margin-bottom:10px; }
+    .lbl{ display:block; font-weight:bold; margin-bottom:4px; }
+    .txt{ width:100%; padding:6px; border:1px solid #999; }
+    .muted2{ color:#666; font-size:12px; }
+
+    .avatarRow{ display:flex; gap:10px; margin-top:8px; }
+    .avatarCard{
+      width:140px; height:120px;
+      border:2px solid #9a9a9a;
+      background:linear-gradient(#fff,#f0f0f0);
+      box-shadow: 2px 2px 0 rgba(0,0,0,.20);
+      border-radius:6px;
+      display:flex; align-items:center; justify-content:center;
+      cursor:pointer;
+      user-select:none;
+      position:relative;
+    }
+    .avatarCard.active{ border-color:#2b7bd4; box-shadow:0 0 0 3px rgba(43,123,212,.25), 2px 2px 0 rgba(0,0,0,.20); }
+    .avatarCard img{ width:80px; height:80px; image-rendering: pixelated; }
+    .avatarTag{
+      position:absolute; bottom:6px; left:0; right:0;
+      text-align:center; font-size:12px; font-weight:bold; color:#333;
+    }
+
+    .btnBig{
+      display:inline-block; padding:10px 18px; font-weight:bold;
+      border:1px solid rgba(0,0,0,.55);
+      background:linear-gradient(#ffe59d,#ffb53a);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.6);
+      cursor:pointer;
+    }
+    .errBox{ border:1px solid #e33; padding:8px; min-height:78px; color:#444; background:#fff; }
+  </style>
 </head>
 
 <body>
@@ -17,97 +56,187 @@
           <a class="logo" href="index.html">
             <span class="logo-word">2D</span><span class="logo-world">WORLD</span>
           </a>
+          <a class="signup-cta" href="register.html">Sign-up and Play!</a>
         </div>
 
         <ul class="nav">
           <li><a href="index.html">My 2DWORLD</a></li>
-          <li><a href="#">Worlds</a></li>
-          <li><a href="#">Catalog</a></li>
+          <li><a href="worlds.html">Worlds</a></li>
+          <li><a href="#" onclick="return false;">Catalog</a></li>
           <li><a href="people.html">People</a></li>
-          <li><a href="#">Creator Club</a></li>
-          <li><a href="#">Events</a></li>
-          <li><a href="#">Forum</a></li>
-          <li><a href="#">News</a></li>
-          <li><a href="#">Parents</a></li>
-          <li><a href="#">Help</a></li>
+          <li><a href="#" onclick="return false;">Creator Club</a></li>
+          <li><a href="#" onclick="return false;">Events</a></li>
+          <li><a href="#" onclick="return false;">Forum</a></li>
+          <li><a href="#" onclick="return false;">News</a></li>
+          <li><a href="#" onclick="return false;">Parents</a></li>
+          <li><a href="#" onclick="return false;">Help</a></li>
         </ul>
       </div>
 
-      <div class="panel">
-        <h2>Create a Free 2DWORLD Account</h2>
+      <div class="signupWrap">
+        <div class="signupGrid">
 
-        <label>Username</label>
-        <input id="username" class="txt" />
+          <div class="box2">
+            <div class="box2h">Create a Free 2DWORLD Account</div>
+            <div class="box2b">
+              <div class="row">
+                <label class="lbl" for="username">Choose a username:</label>
+                <input id="username" class="txt" placeholder="letters/numbers/_" autocomplete="off" />
+                <div class="muted2">Letters/numbers/underscores only. This is what people see.</div>
+              </div>
 
-        <label>Email</label>
-        <input id="email" class="txt" type="email" />
+              <div class="row">
+                <label class="lbl" for="email">Email (needed for verification & password resets):</label>
+                <input id="email" class="txt" type="email" autocomplete="email" />
+                <div class="muted2">Your email will NOT be public on your profile.</div>
+              </div>
 
-        <label>Password</label>
-        <input id="password" class="txt" type="password" />
+              <div class="row">
+                <label class="lbl" for="password">Password:</label>
+                <input id="password" class="txt" type="password" autocomplete="new-password" />
+              </div>
 
-        <button id="registerBtn" class="btn darkbtn">Continue</button>
+              <div class="row">
+                <div class="lbl">Are you a boy or a girl?</div>
+                <label style="margin-right:10px;"><input type="radio" name="gender" value="boy" checked> Boy</label>
+                <label style="margin-right:10px;"><input type="radio" name="gender" value="girl"> Girl</label>
+                <label><input type="radio" name="gender" value="other"> Other</label>
 
-        <div id="msg" class="muted" style="margin-top:10px;"></div>
+                <div class="avatarRow">
+                  <div id="avBoy" class="avatarCard active" data-avatar="male" title="Boy Avatar">
+                    <img id="imgBoy" alt="Boy avatar">
+                    <div class="avatarTag">Boy</div>
+                  </div>
+                  <div id="avGirl" class="avatarCard" data-avatar="female" title="Girl Avatar">
+                    <img id="imgGirl" alt="Girl avatar">
+                    <div class="avatarTag">Girl</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row" style="display:flex; gap:12px; align-items:flex-start;">
+                <button id="registerBtn" class="btnBig" type="button">Continue</button>
+                <div id="msg" class="errBox"></div>
+              </div>
+
+              <div class="muted2">
+                Already registered? Go to the <a href="account.html">Login</a> page.<br>
+                Need a reset? Use <a href="account.html#reset">Password Reset</a>.
+              </div>
+            </div>
+          </div>
+
+          <div class="box2">
+            <div class="box2h">Hey Parents!</div>
+            <div class="box2b">
+              2DWORLD uses email verification to reduce fake accounts.<br><br>
+              <b>Tip:</b> If the player is under 13, consider using a parent-controlled email.
+            </div>
+          </div>
+
+        </div>
       </div>
 
     </div>
   </div>
 
-  <!-- IMPORTANT: script is at the BOTTOM -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-    import {
-      getAuth,
-      createUserWithEmailAndPassword,
-      sendEmailVerification
-    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
-    import {
-      getFirestore,
-      doc,
-      setDoc
-    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+    // IMPORTANT: you MUST have firebase.js exporting { app, auth, db }
+    import { auth, db } from "./firebase.js";
+    import { MALE_AVATAR, FEMALE_AVATAR } from "./avatars.js";
 
-    const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_PROJECT.firebaseapp.com",
-      projectId: "YOUR_PROJECT",
-    };
+    import { createUserWithEmailAndPassword, sendEmailVerification } from
+      "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
+    import { doc, setDoc, getDoc, serverTimestamp } from
+      "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
-    const btn = document.getElementById("registerBtn");
-    const msg = document.getElementById("msg");
+    const $ = (s) => document.querySelector(s);
+
+    const usernameEl = $("#username");
+    const emailEl = $("#email");
+    const passEl = $("#password");
+    const msgEl = $("#msg");
+    const btn = $("#registerBtn");
+
+    const avBoy = $("#avBoy");
+    const avGirl = $("#avGirl");
+    const imgBoy = $("#imgBoy");
+    const imgGirl = $("#imgGirl");
+
+    imgBoy.src = MALE_AVATAR;
+    imgGirl.src = FEMALE_AVATAR;
+
+    let pickedAvatar = "male";
+
+    function setMsg(t){ msgEl.textContent = t || ""; }
+    function normUsername(u){ return String(u||"").trim().toLowerCase(); }
+    function validUsername(u){ return /^[a-z0-9_]{3,20}$/.test(u); }
+
+    function selectAvatar(which){
+      pickedAvatar = which;
+      avBoy.classList.toggle("active", which === "male");
+      avGirl.classList.toggle("active", which === "female");
+    }
+
+    avBoy.addEventListener("click", () => selectAvatar("male"));
+    avGirl.addEventListener("click", () => selectAvatar("female"));
+
+    // Keep avatar in sync with radio buttons (Boy/Girl)
+    document.querySelectorAll("input[name=gender]").forEach(r => {
+      r.addEventListener("change", () => {
+        const g = document.querySelector("input[name=gender]:checked")?.value || "boy";
+        if (g === "girl") selectAvatar("female");
+        else if (g === "boy") selectAvatar("male");
+        // "other" keeps whatever they last picked
+      });
+    });
 
     btn.addEventListener("click", async () => {
-      const username = document.getElementById("username").value.trim().toLowerCase();
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value;
+      setMsg("");
 
-      if (!username || !email || !password) {
-        msg.textContent = "Fill in all fields.";
+      const username = normUsername(usernameEl.value);
+      const email = String(emailEl.value || "").trim();
+      const password = String(passEl.value || "");
+      const gender = document.querySelector("input[name=gender]:checked")?.value || "boy";
+
+      if (!validUsername(username)) {
+        setMsg("Username must be 3–20 characters (letters/numbers/underscore).");
         return;
       }
+      if (!email.includes("@")) { setMsg("Enter a valid email."); return; }
+      if (password.length < 6) { setMsg("Password must be at least 6 characters."); return; }
 
       try {
-        const cred = await createUserWithEmailAndPassword(auth, email, password);
-        await sendEmailVerification(cred.user);
+        // Reserve username first (prevents duplicates)
+        const nameRef = doc(db, "usernames", username);
+        const nameSnap = await getDoc(nameRef);
+        if (nameSnap.exists()) {
+          setMsg("That username is taken.");
+          return;
+        }
 
-        await setDoc(doc(db, "usernames", username), {
-          uid: cred.user.uid,
-          createdAt: new Date()
-        });
+        // Create auth account
+        const cred = await createUserWithEmailAndPassword(auth, email, password);
+
+        // Create username map + user profile
+        await setDoc(nameRef, { uid: cred.user.uid, createdAt: serverTimestamp() });
 
         await setDoc(doc(db, "users", cred.user.uid), {
           username,
-          createdAt: new Date()
+          gender,
+          avatar: pickedAvatar,     // "male" or "female"
+          createdAt: serverTimestamp()
         });
 
-        msg.textContent = "Account created! Check your email to verify.";
+        await sendEmailVerification(cred.user);
+
+        setMsg("Account created! Check your email to verify. Then you can log in.");
+        // optional redirect:
+        // location.href = "account.html";
       } catch (e) {
-        msg.textContent = e.message;
         console.error(e);
+        setMsg(e?.message || "Sign up failed.");
       }
     });
   </script>

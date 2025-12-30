@@ -1,53 +1,115 @@
-<script type="module">
-import { auth, db } from "./firebase.js";
-import {
-  createUserWithEmailAndPassword,
-  sendEmailVerification
-} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>2DWORLD – Sign Up</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
 
-import {
-  doc,
-  setDoc,
-  serverTimestamp
-} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+<body>
+  <div id="viewport">
+    <div id="page">
 
-const btn = document.getElementById("continueBtn");
+      <div class="top-sky">
+        <div class="topbar">
+          <div class="auth"><a href="account.html">Login</a></div>
+          <a class="logo" href="index.html">
+            <span class="logo-word">2D</span><span class="logo-world">WORLD</span>
+          </a>
+        </div>
 
-btn.addEventListener("click", async () => {
-  const username = document.getElementById("username").value.trim().toLowerCase();
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value;
-  const gender =
-    document.querySelector("input[name='gender']:checked")?.value || "other";
+        <ul class="nav">
+          <li><a href="index.html">My 2DWORLD</a></li>
+          <li><a href="#">Worlds</a></li>
+          <li><a href="#">Catalog</a></li>
+          <li><a href="people.html">People</a></li>
+          <li><a href="#">Creator Club</a></li>
+          <li><a href="#">Events</a></li>
+          <li><a href="#">Forum</a></li>
+          <li><a href="#">News</a></li>
+          <li><a href="#">Parents</a></li>
+          <li><a href="#">Help</a></li>
+        </ul>
+      </div>
 
-  if (!username || !email || !password) {
-    alert("Fill in all fields.");
-    return;
-  }
+      <div class="panel">
+        <h2>Create a Free 2DWORLD Account</h2>
 
-  try {
-    const cred = await createUserWithEmailAndPassword(auth, email, password);
-    const user = cred.user;
+        <label>Username</label>
+        <input id="username" class="txt" />
 
-    await setDoc(doc(db, "usernames", username), {
-      uid: user.uid,
-      createdAt: serverTimestamp()
+        <label>Email</label>
+        <input id="email" class="txt" type="email" />
+
+        <label>Password</label>
+        <input id="password" class="txt" type="password" />
+
+        <button id="registerBtn" class="btn darkbtn">Continue</button>
+
+        <div id="msg" class="muted" style="margin-top:10px;"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- IMPORTANT: script is at the BOTTOM -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+    import {
+      getAuth,
+      createUserWithEmailAndPassword,
+      sendEmailVerification
+    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+    import {
+      getFirestore,
+      doc,
+      setDoc
+    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT.firebaseapp.com",
+      projectId: "YOUR_PROJECT",
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const btn = document.getElementById("registerBtn");
+    const msg = document.getElementById("msg");
+
+    btn.addEventListener("click", async () => {
+      const username = document.getElementById("username").value.trim().toLowerCase();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+
+      if (!username || !email || !password) {
+        msg.textContent = "Fill in all fields.";
+        return;
+      }
+
+      try {
+        const cred = await createUserWithEmailAndPassword(auth, email, password);
+        await sendEmailVerification(cred.user);
+
+        await setDoc(doc(db, "usernames", username), {
+          uid: cred.user.uid,
+          createdAt: new Date()
+        });
+
+        await setDoc(doc(db, "users", cred.user.uid), {
+          username,
+          createdAt: new Date()
+        });
+
+        msg.textContent = "Account created! Check your email to verify.";
+      } catch (e) {
+        msg.textContent = e.message;
+        console.error(e);
+      }
     });
-
-    await setDoc(doc(db, "users", user.uid), {
-      username,
-      gender,
-      avatar: gender,
-      joinedAt: serverTimestamp()
-    });
-
-    await sendEmailVerification(user);
-
-    alert("Account created! Please verify your email.");
-    location.href = "index.html";
-  } catch (err) {
-    console.error(err);
-    alert(err.message);
-  }
-});
-</script>
+  </script>
+</body>
+</html>

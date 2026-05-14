@@ -142,19 +142,19 @@
   </div>
 </div>
 
-<!-- FIXED: Full www.gstatic.com source addresses prevent browser CORS blocks -->
 <script type="module">
   import { initializeApp } from "https://gstatic.com";
   import { getFirestore, doc, getDoc } from "https://gstatic.com";
 
-  // Configuration variables linking to project dworld-b10ea
+  // INTEGRATED LIVE CREDENTIALS
   const firebaseConfig = {
-    apiKey: "AIzaSyAsX-YOUR_ACTUAL_WEB_API_KEY_HERE", 
-    authDomain: "://firebaseapp.com",
+    apiKey: "AIzaSyAexuq5Q8KV6xMC0AKVk7H0dnMFsjyPWes",
+    authDomain: "dworld-b10ea.firebaseapp.com",
     projectId: "dworld-b10ea",
-    storageBucket: "://appspot.com",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID_STRING"
+    storageBucket: "dworld-b10ea.firebasestorage.app",
+    messagingSenderId: "893085470416",
+    appId: "1:893085470416:web:fe733dc6ca67380f70d8d5",
+    measurementId: "G-DVC13ZYNS1"
   };
 
   const app = initializeApp(firebaseConfig);
@@ -217,7 +217,7 @@
 
     } catch (err) {
       console.error("Firestore System Error:", err);
-      statusNotice.textContent = "Database communication failure. Review your Firebase config or API keys.";
+      statusNotice.textContent = "Database communication failure. Please verify your internet connection or console permissions.";
       statusNotice.style.display = 'block';
       resultsView.innerHTML = "";
     }

@@ -142,17 +142,17 @@
   </div>
 </div>
 
-<!-- FIXED: Explicit CDN URLs matching Firebase version 10.14.1 -->
+<!-- FIXED: Added explicit https:// paths to ensure scripts resolve properly -->
 <script type="module">
-  import { initializeApp } from "gstatic.com";
-  import { getFirestore, doc, getDoc } from "gstatic.com";
+  import { initializeApp } from "https://gstatic.com";
+  import { getFirestore, doc, getDoc } from "https://gstatic.com";
 
-  // Configuration for project dworld-b10ea
+  // Configuration variables linking to project dworld-b10ea
   const firebaseConfig = {
     apiKey: "AIzaSyAsX-YOUR_ACTUAL_WEB_API_KEY_HERE", 
-    authDomain: "firebaseapp.com",
+    authDomain: "://firebaseapp.com",
     projectId: "dworld-b10ea",
-    storageBucket: "appspot.com",
+    storageBucket: "://appspot.com",
     messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
     appId: "YOUR_APP_ID_STRING"
   };
@@ -226,4 +226,3 @@
 
 </body>
 </html>
-

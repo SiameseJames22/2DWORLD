@@ -46,6 +46,7 @@
       background: linear-gradient(var(--navBlue1), var(--navBlue2));
       border-top: 1px solid rgba(255,255,255,.22);
       border-bottom: 1px solid rgba(0,0,0,.35);
+      flex-wrap: wrap; /* Keeps tabs clean if screen sizes shift */
     }
     .nav a {
       display: block; padding: 7px 10px; color: #fff; font-weight: bold;
@@ -100,13 +101,19 @@
 <div id="viewport">
   <div id="page">
     
-    <!-- Top Nav Sky Graphic Block Layout -->
+    <!-- Top Nav Sky Graphic Block Layout - All 10 Bars Included In Order -->
     <div class="top-sky">
       <ul class="nav">
         <li><a href="index.html">My 2DWORLD</a></li>
-        <li><a href="games.html">Games</a></li>
+        <li><a href="worlds.html">Worlds</a></li>
         <li><a href="catalog.html">Catalog</a></li>
         <li><a href="people.html" style="background: rgba(0,0,0,0.25);">People</a></li>
+        <li><a href="creatorclub.html">Creator Club</a></li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="forum.html">Forum</a></li>
+        <li><a href="news.html">News</a></li>
+        <li><a href="parents.html">Parents</a></li>
+        <li><a href="help.html">Help</a></li>
       </ul>
     </div>
 
@@ -137,8 +144,9 @@
   </div>
 </div>
 
-<!-- Firebase Module System Pipeline Integration -->
+<!-- Firebase Module Pipeline Integration -->
 <script type="module">
+  // Combined app initialization and firestore script into unified library routes
   import { initializeApp } from "gstatic.com";
   import { getFirestore, doc, getDoc } from "gstatic.com";
 
@@ -161,7 +169,6 @@
   const statusNotice = document.getElementById('statusNotice');
 
   searchBtn.addEventListener('click', async () => {
-    // Converts values to lower case to directly match document names like "admin"
     const queryName = userInput.value.trim().toLowerCase();
     statusNotice.style.display = 'none';
     resultsView.innerHTML = "";
@@ -175,27 +182,24 @@
     resultsView.innerHTML = "<span style='color:#666;'>Accessing 2DWORLD directories...</span>";
 
     try {
-      // Accessing the exact folder verified by your Firestore console view
       const userDocRef = doc(db, "usernames", queryName);
       const userSnapshot = await getDoc(userDocRef);
 
       resultsView.innerHTML = "";
 
       if (!userSnapshot.exists()) {
-        statusNotice.textContent = `The player record "${queryName}" could not be located.`;
+        statusNotice.textContent = `The player record "${userInput.value.trim()}" could not be located.`;
         statusNotice.style.display = 'block';
         return;
       }
 
       const data = userSnapshot.data();
       
-      // Sanitizes capitalization matching logic for active variables
       const isOnline = data.status && data.status.toLowerCase() === "online";
       const badgeClass = isOnline ? "online" : "offline";
       const badgeLabel = isOnline ? "ONLINE" : "OFFLINE";
       const displayTitle = queryName.charAt(0).toUpperCase() + queryName.slice(1);
 
-      // Appends verified details seamlessly inside your user layout container
       resultsView.innerHTML = `
         <div class="userCard">
           <div class="avatarPick selected" id="renderCanvas_${data.uid || queryName}">
@@ -216,7 +220,7 @@
 
     } catch (err) {
       console.error("Firestore System Error:", err);
-      statusNotice.textContent = "Database communication failure. Review browser configuration console diagnostics.";
+      statusNotice.textContent = "Database communication failure. Review your Firebase config or API keys.";
       statusNotice.style.display = 'block';
       resultsView.innerHTML = "";
     }
